@@ -14,6 +14,9 @@ interface PokemonSearchDao {
     suspend fun insertPokemons(pokemons: List<PokemonEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOnePokemon(pokemon: PokemonEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPokemonDetail(pokemonDetail: PokemonDetailEntity)
 
     @Query("SELECT * FROM pokemons ORDER BY id ASC LIMIT :limit OFFSET :offset")
