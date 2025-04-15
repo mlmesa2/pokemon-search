@@ -10,7 +10,6 @@ data class PokemonDetailResponse(
     val height: Int,
     val weight: Int,
     val abilities: List<AbilityResponse>,
-    val forms: List<FormResponse>,
     val sprites: SpritesResponse
 )
 
@@ -22,12 +21,6 @@ data class AbilityResponse(
 )
 
 @Serializable
-data class FormResponse(
-    val name: String,
-    val url: String
-)
-
-@Serializable
 data class NamedResource(
     val name: String,
     val url: String
@@ -35,8 +28,22 @@ data class NamedResource(
 
 @Serializable
 data class SpritesResponse(
+    @SerialName("back_default")
+    val backDefault: String?,
+    @SerialName("back_female")
+    val backFemale: String?,
+    @SerialName("back_shiny")
+    val backShiny: String?,
+    @SerialName("back_shiny_female")
+    val backShinyFemale: String?,
     @SerialName("front_default")
     val frontDefault: String?,
+    @SerialName("front_female")
+    val frontFemale: String?,
+    @SerialName("front_shiny")
+    val frontShiny: String?,
+    @SerialName("front_shiny_female")
+    val frontShinyFemale: String?,
     val other: OtherResponse?
 )
 

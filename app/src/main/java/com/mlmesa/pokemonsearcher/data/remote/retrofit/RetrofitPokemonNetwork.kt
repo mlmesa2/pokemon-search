@@ -4,7 +4,6 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.mlmesa.pokemonsearcher.common.Result
 import com.mlmesa.pokemonsearcher.data.remote.PokemonRemoteDataSource
 import com.mlmesa.pokemonsearcher.data.remote.model.PokemonDetailResponse
-import com.mlmesa.pokemonsearcher.data.remote.model.PokemonFormResponse
 import com.mlmesa.pokemonsearcher.data.remote.model.PokemonListResponse
 import com.mlmesa.pokemonsearcher.data.remote.safeApiCall
 import kotlinx.serialization.json.Json
@@ -44,7 +43,4 @@ class RetrofitPokemonNetwork @Inject constructor(
         networkApi.getPokemonDetail(nameOrId)
     }
 
-    override suspend fun getPokemonForm(id: Int): Result<PokemonFormResponse> = safeApiCall {
-        networkApi.getPokemonForm(id)
-    }
 }

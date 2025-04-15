@@ -3,7 +3,7 @@ package com.mlmesa.pokemonsearcher.data.local.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mlmesa.pokemonsearcher.data.local.PokemonDetailAbility
-import com.mlmesa.pokemonsearcher.data.local.PokemonDetailForm
+import com.mlmesa.pokemonsearcher.data.local.PokemonSprites
 
 @Entity(tableName = "pokemon_details")
 data class PokemonDetailEntity(
@@ -14,5 +14,5 @@ data class PokemonDetailEntity(
     val weight: Int,
     val imageUrl: String,
     val abilities: List<PokemonDetailAbility>,
-    val forms: List<PokemonDetailForm>
+    val sprites: PokemonSprites
 )
