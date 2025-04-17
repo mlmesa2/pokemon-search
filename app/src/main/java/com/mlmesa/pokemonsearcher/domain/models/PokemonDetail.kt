@@ -7,7 +7,10 @@ data class PokemonDetail(
     val weight: Int,
     val imageUrl: String,
     val abilities: List<Ability>,
-    val sprites: Sprites
+    val sprites: Sprites,
+    val stats: List<Stat>,
+    val types: List<String>
+
 )
 
 data class Ability(
@@ -25,4 +28,9 @@ data class Sprites(
     val frontShiny: String?,
     val frontShinyFemale: String?,
     val officialArtwork: String?,
+)
+
+data class Stat(
+    val statName: String,
+    val baseStat: Int
 )

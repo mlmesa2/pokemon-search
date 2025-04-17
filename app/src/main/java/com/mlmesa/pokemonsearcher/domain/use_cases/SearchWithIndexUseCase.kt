@@ -9,5 +9,5 @@ import javax.inject.Inject
 class SearchWithIndexUseCase @Inject constructor(
     private val pokemonRepository: PokemonRepository
 ){
-    suspend operator fun invoke(query: String): Flow<Result<List<Pokemon>>> = pokemonRepository.searchPokemon(query)
+    suspend operator fun invoke(query: String): Flow<Result<List<Pokemon>>> = pokemonRepository.filterPokemonByNameStart(query)
 }

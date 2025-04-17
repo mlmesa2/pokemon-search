@@ -10,7 +10,9 @@ data class PokemonDetailResponse(
     val height: Int,
     val weight: Int,
     val abilities: List<AbilityResponse>,
-    val sprites: SpritesResponse
+    val sprites: SpritesResponse,
+    val stats: List<StatResponse>,
+    val types: List<TypeResponse>
 )
 
 @Serializable
@@ -57,4 +59,26 @@ data class OtherResponse(
 data class OfficialArtworkResponse(
     @SerialName("front_default")
     val frontDefault: String?
+)
+
+@Serializable
+data class StatResponse(
+    val stat: StatRes,
+    @SerialName("base_stat")
+    val baseStat: Int
+)
+
+@Serializable
+data class StatRes(
+    val name: String
+)
+
+@Serializable
+data class TypeResponse(
+    val type: TypeRes
+)
+
+@Serializable
+data class TypeRes(
+    val name: String
 )
