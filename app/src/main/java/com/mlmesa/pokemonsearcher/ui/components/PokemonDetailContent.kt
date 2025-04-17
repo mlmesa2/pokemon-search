@@ -8,6 +8,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,23 +26,35 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 import coil.compose.AsyncImage
 import com.mlmesa.pokemonsearcher.R
 import com.mlmesa.pokemonsearcher.domain.models.PokemonDetail
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun PokemonDetailContent(
     pokemonDetail: PokemonDetail,
-    scrollState: ScrollState
+    scrollState: ScrollState,
+    audioUrl: String
 ) {
     val mainColor = when (pokemonDetail.types.firstOrNull()?.lowercase()) {
         "fire" -> Color(0xFFFF7F50)
@@ -68,12 +81,23 @@ fun PokemonDetailContent(
     val infiniteAnimation = rememberInfiniteTransition()
     val floatAnim by infiniteAnimation.animateFloat(
         initialValue = 0f,
-        targetValue = 10f,
+        targetValue = 20f,
         animationSpec = infiniteRepeatable(
             animation = tween(2000, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val player = remember {
+        ExoPlayer.Builder(context).build()
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            player.release()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -96,8 +120,15 @@ fun PokemonDetailContent(
                     .size(220.dp)
                     .graphicsLayer {
                         translationY = floatAnim
+                    }.clickable{
+                        coroutineScope.launch {
+                            val mediaItem = MediaItem.fromUri(audioUrl)
+                            player.setMediaItem(mediaItem)
+                            player.prepare()
+                            player.playWhenReady = true
+                        }
                     },
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.Fit,
             )
         }
 

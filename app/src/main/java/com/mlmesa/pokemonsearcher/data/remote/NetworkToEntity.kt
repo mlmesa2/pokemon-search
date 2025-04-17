@@ -40,7 +40,8 @@ fun PokemonDetailResponse.toDetailEntity(): PokemonDetailEntity =
                 baseStat = it.baseStat
             )
         },
-        types = types.map { it.type.name }
+        types = types.map { it.type.name },
+        cries = cries?.latest
     )
 
 fun PokemonDetailResponse.toPokemonEntity(): PokemonEntity =

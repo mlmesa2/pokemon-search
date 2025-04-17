@@ -21,7 +21,8 @@ data class PokemonDetailEntity(
     val abilities: List<PokemonDetailAbility>,
     val sprites: PokemonSprites,
     val stats: List<PokemonStatLocal>,
-    val types: List<String>
+    val types: List<String>,
+    val cries: String?
 ) {
     fun toDetailDomainModel(): PokemonDetail = PokemonDetail(
         id = id,
@@ -32,7 +33,9 @@ data class PokemonDetailEntity(
         abilities = abilities.map { it.toDomainModel() },
         sprites = sprites.toDomainModel(),
         stats = stats.map { it.toDomainModel() },
-        types = types
+        types = types,
+        cries = cries
+
     )
 
     companion object {
@@ -46,7 +49,8 @@ data class PokemonDetailEntity(
                 abilities = pokemonDetail.abilities.map { pokemonDetailAbilityFromDomain(it) },
                 sprites = pokemonSpritesFromDomainModel(pokemonDetail.sprites),
                 stats = pokemonDetail.stats.map { pokemonStatLocalFromDomain(it) },
-                types = pokemonDetail.types
+                types = pokemonDetail.types,
+                cries = pokemonDetail.cries
             )
 
     }

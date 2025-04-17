@@ -73,7 +73,8 @@ fun PokemonDetailScreen(
             is PokemonDetailUiState.Success -> {
                 PokemonDetailContent(
                     pokemonDetail = state.pokemonDetail,
-                    scrollState = scrollState
+                    scrollState = scrollState,
+                    audioUrl = state.pokemonDetail.cries ?: ""
                 )
             }
             is PokemonDetailUiState.Error -> {

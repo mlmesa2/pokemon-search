@@ -12,7 +12,8 @@ data class PokemonDetailResponse(
     val abilities: List<AbilityResponse>,
     val sprites: SpritesResponse,
     val stats: List<StatResponse>,
-    val types: List<TypeResponse>
+    val types: List<TypeResponse>,
+    val cries: CriesResponse?
 )
 
 @Serializable
@@ -81,4 +82,10 @@ data class TypeResponse(
 @Serializable
 data class TypeRes(
     val name: String
+)
+
+@Serializable
+data class CriesResponse(
+    val latest: String?,
+    val legacy: String?
 )

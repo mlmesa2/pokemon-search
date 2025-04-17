@@ -9,7 +9,8 @@ data class PokemonDetail(
     val abilities: List<Ability>,
     val sprites: Sprites,
     val stats: List<Stat>,
-    val types: List<String>
+    val types: List<String>,
+    val cries: String?
 
 )
 
