@@ -1,5 +1,6 @@
 package com.mlmesa.pokemonsearcher.ui.components
 
+import android.widget.Toast
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -27,12 +28,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,11 +41,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import coil.compose.AsyncImage
 import com.mlmesa.pokemonsearcher.R
 import com.mlmesa.pokemonsearcher.domain.models.PokemonDetail
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -90,7 +89,18 @@ fun PokemonDetailContent(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val player = remember {
-        ExoPlayer.Builder(context).build()
+        ExoPlayer.Builder(context).build().apply {
+            addListener(object : Player.Listener{
+                override fun onPlayerError(error: PlaybackException) {
+                    super.onPlayerError(error)
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.error_playing_audio, error.message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        }
     }
 
     DisposableEffect(Unit) {
@@ -120,7 +130,8 @@ fun PokemonDetailContent(
                     .size(220.dp)
                     .graphicsLayer {
                         translationY = floatAnim
-                    }.clickable{
+                    }
+                    .clickable {
                         coroutineScope.launch {
                             val mediaItem = MediaItem.fromUri(audioUrl)
                             player.setMediaItem(mediaItem)

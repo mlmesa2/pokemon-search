@@ -4,45 +4,34 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.mlmesa.pokemonsearcher.navigation.AppNavigation
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.mlmesa.pokemonsearcher.data.connectivity.ConnectionMonitor
+import com.mlmesa.pokemonsearcher.navigation.PokemonApp
+import com.mlmesa.pokemonsearcher.navigation.rememberAppState
 import com.mlmesa.pokemonsearcher.ui.theme.PokemonSearcherTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var networkConnection: ConnectionMonitor
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
+            val appState = rememberAppState(
+                networkConnection = networkConnection
+            )
             PokemonSearcherTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(
-                        Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                            .consumeWindowInsets(innerPadding)
-                            .windowInsetsPadding(
-                                WindowInsets.safeDrawing.only(
-                                    WindowInsetsSides.Horizontal,
-                                ),
-                            ),
-                    ) {
-                    AppNavigation()
-                }}
+                PokemonApp(pokemonAppState = appState)
+
             }
         }
     }

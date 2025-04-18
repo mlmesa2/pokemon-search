@@ -1,23 +1,22 @@
 package com.mlmesa.pokemonsearcher.ui.screens.details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.mlmesa.pokemonsearcher.common.Result
 import com.mlmesa.pokemonsearcher.domain.models.PokemonDetail
 import com.mlmesa.pokemonsearcher.domain.use_cases.GetPokemonDetailUseCase
+import com.mlmesa.pokemonsearcher.navigation.PokemonDetailScreenNavigation
+import com.mlmesa.pokemonsearcher.ui.screens.details.PokemonDetailUiState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.mlmesa.pokemonsearcher.common.Result
-import com.mlmesa.pokemonsearcher.navigation.PokemonDetailScreenNavigation
-import com.mlmesa.pokemonsearcher.ui.screens.details.PokemonDetailUiState.*
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
 
 sealed interface PokemonDetailUiState {
     object Loading : PokemonDetailUiState

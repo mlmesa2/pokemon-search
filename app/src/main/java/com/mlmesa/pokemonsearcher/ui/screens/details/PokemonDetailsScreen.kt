@@ -92,7 +92,7 @@ fun PokemonDetailScreen(
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = { loadPokemonDetail }) {
+                    Button(onClick = { loadPokemonDetail() }) {
                         Text(text = stringResource(R.string.retry))
                     }
                 }
@@ -107,7 +107,7 @@ fun PokemonDetailScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
 
-                    Button(onClick = { loadPokemonDetail }) {
+                    Button(onClick = { loadPokemonDetail() }) {
                         Text(text = stringResource(R.string.retry))
                     }
                 }

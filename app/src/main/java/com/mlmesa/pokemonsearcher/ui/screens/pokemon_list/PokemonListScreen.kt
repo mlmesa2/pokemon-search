@@ -13,9 +13,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -59,6 +64,7 @@ fun PokemonListRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonListScreen(
     modifier: Modifier = Modifier,
@@ -74,91 +80,109 @@ fun PokemonListScreen(
     val focusManager = LocalFocusManager.current
     var isFilterMode by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        SearchBar(
-            query = searchQuery,
-            filterMode = isFilterMode,
-            onQueryChange = { if (isFilterMode) searchPokemon(it) else updateSearchQuery(it) },
-            onSearch = {
-                searchPokemon(searchQuery)
-                focusManager.clearFocus()
-            },
-            onClearQuery = {
-                clearQuery()
-                focusManager.clearFocus()
-                loadPokemons()
-            },
-            focusRequester = focusRequester
-        )
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
-        ) {
-            Text(
-                text = stringResource(R.string.filter_search),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                modifier = Modifier.fillMaxWidth(),
+                title = {
+                    Text(text = stringResource(R.string.app_name))
+                },
+                scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Switch(checked = isFilterMode, onCheckedChange = {
-                isFilterMode  = it
-            })
         }
-        Spacer(modifier = Modifier.height(4.dp))
 
-        when (uiState) {
-            is PokemonUiState.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(50.dp),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 4.dp)
+                .padding(it)
+        ) {
+            SearchBar(
+                query = searchQuery,
+                filterMode = isFilterMode,
+                onQueryChange = { if (isFilterMode) searchPokemon(it) else updateSearchQuery(it) },
+                onSearch = {
+                    searchPokemon(searchQuery)
+                    focusManager.clearFocus()
+                },
+                onClearQuery = {
+                    clearQuery()
+                    focusManager.clearFocus()
+                    loadPokemons()
+                },
+                focusRequester = focusRequester
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                Text(
+                    text = stringResource(R.string.filter_search),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Switch(checked = isFilterMode, onCheckedChange = {
+                    isFilterMode = it
+                })
             }
-            is PokemonUiState.Success -> {
-                val pokemonList = uiState.pokemons
-                if (pokemonList.isEmpty()) {
+            Spacer(modifier = Modifier.height(4.dp))
+
+            when (uiState) {
+                is PokemonUiState.Loading -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = stringResource(R.string.no_pok_mon_found),
-                            style = MaterialTheme.typography.bodyLarge
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(50.dp),
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
-                } else {
-                    PokemonList(
-                        pokemons = pokemonList,
-                        onPokemonClick = {
-                            navigateToDetails(it.name)
-                            clearQuery()
-                        }
-                    )
                 }
-            }
-            is PokemonUiState.Error -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = uiState.message,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.error
+
+                is PokemonUiState.Success -> {
+                    val pokemonList = uiState.pokemons
+                    if (pokemonList.isEmpty()) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.no_pok_mon_found),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+                    } else {
+                        PokemonList(
+                            pokemons = pokemonList,
+                            onPokemonClick = {
+                                navigateToDetails(it.name)
+                                clearQuery()
+                            }
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = { loadPokemons() }) {
-                            Text(stringResource(R.string.retry))
+                    }
+                }
+
+                is PokemonUiState.Error -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = uiState.message,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.error,
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(onClick = { loadPokemons() }) {
+                                Text(stringResource(R.string.retry))
+                            }
                         }
                     }
                 }

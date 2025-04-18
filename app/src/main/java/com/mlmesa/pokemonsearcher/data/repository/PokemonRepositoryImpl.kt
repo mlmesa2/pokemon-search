@@ -48,8 +48,11 @@ class PokemonRepositoryImpl @Inject constructor(
                 }
             }
 
-            is Result.Error ->
-                emit(Result.Error(response.exception))
+            is Result.Error ->{
+                if (localPokemons.isEmpty()) {
+                    emit(Result.Error(response.exception))
+                }
+            }
 
             else ->
                 emit(Result.Empty)
@@ -75,8 +78,9 @@ class PokemonRepositoryImpl @Inject constructor(
             }
 
             is Result.Error ->
-                emit(Result.Error(response.exception))
-
+                if (localPokemonDetail == null) {
+                    emit(Result.Error(response.exception))
+                }
             else ->
                 emit(Result.Empty)
         }

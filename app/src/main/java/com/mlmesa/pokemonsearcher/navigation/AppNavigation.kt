@@ -19,12 +19,13 @@ data class PokemonDetailScreenNavigation(
 
 @Composable
 fun AppNavigation(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    appState: PokemonAppState
 ) {
     val navHostController = rememberNavController()
      NavHost(
-        navController = navHostController,
-        startDestination = PokemonScreenNavigation,
+         navController = navHostController,
+         startDestination = PokemonScreenNavigation,
          modifier = modifier
     ) {
          composable<PokemonScreenNavigation> {

@@ -16,4 +16,6 @@
     <string name="back">Back</string>
     <string name="filter_pokemon_by_starting_letters">Filter Pokemon by starting letters</string>
     <string name="filter_search">Filter/Search</string>
+    <string name="not_connected">No internet connection</string>
+    <string name="error_playing_audio">Error playing audio: %s</string>
 </resources>
