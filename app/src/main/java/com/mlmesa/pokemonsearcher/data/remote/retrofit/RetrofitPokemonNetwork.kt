@@ -1,6 +1,5 @@
 package com.mlmesa.pokemonsearcher.data.remote.retrofit
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.mlmesa.pokemonsearcher.common.Result
 import com.mlmesa.pokemonsearcher.data.remote.PokemonRemoteDataSource
 import com.mlmesa.pokemonsearcher.data.remote.model.PokemonDetailResponse
@@ -11,6 +10,7 @@ import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 

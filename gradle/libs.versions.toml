@@ -37,10 +37,7 @@ lifecycleRuntimeKtx = "2.8.7"
 loggingInterceptor = "4.11.0"
 material = "1.12.0"
 media3Exoplayer = "1.6.1"
-protobuf = "4.29.2"
-protobufPlugin = "0.9.4"
-retrofit = "2.9.0"
-retrofitKotlinxSerializationJson = "1.0.0"
+retrofit = "2.11.0"
 room = "2.7.0"
 
 
@@ -98,11 +95,9 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 okhttp-logging = { group = "com.squareup.okhttp3", name="logging-interceptor", version.ref = "loggingInterceptor" }
-protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
-protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 retrofit = { group = "com.squareup.retrofit2", name="retrofit", version.ref = "retrofit" }
 retrofit-converter = { group = "com.squareup.retrofit2", name = "converter-scalars", version.ref = "retrofit"}
-retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
+retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
